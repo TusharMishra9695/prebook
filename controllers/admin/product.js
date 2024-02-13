@@ -1,16 +1,32 @@
 const { errorMessage } = require("../../utils/handleFunction");
+const Product = require("../../schemas/productSchema");
 async function handleGetProducts(req, res) {
   try {
-    res.status(200).send("Get API");
+    let result = await Product.find();
+    if (result) {
+      res.status(204).send({
+        result: result,
+        message: "Nothing in Product List",
+        success: false,
+      });
+    } else {
+      res.status(200).send({
+        result: result,
+        message: "Products Fetched Sucessfully",
+        success: true,
+      });
+    }
   } catch (e) {
-    errorMessage(res);
+    errorMessage(res, "Products");
   }
 }
 async function handlePostProducts(req, res) {
   try {
-    res.status(200).send("Post API");
+    let result = new Product(req.body);
+    await result.save;
+    res.status(201).send({ message: "Product Listed", success: true });
   } catch (e) {
-    errorMessage(res);
+    errorMessage(res, "Products");
   }
 }
 
