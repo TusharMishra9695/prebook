@@ -6,7 +6,8 @@ async function handlePostUser(req, res) {
   try {
     let findUser = await Signup.findOne({ phoneNumber });
     if (findUser) {
-      res.status(409).send({
+      res.status(200).send({
+        // 409 previously rmeoved because not working in native
         message: "Phoneno. is already registered.",
         success: false,
       });
@@ -18,7 +19,6 @@ async function handlePostUser(req, res) {
         .send({ message: "User Registered successfully ", success: true });
     }
   } catch (e) {
-    console.log(e, "error");
     errorMessage(res, "signup");
   }
 }

@@ -12,4 +12,4 @@ const cartSchema = mongoose.Schema(
   { timestamps: true }
 );
 
-module.exports = mongoose.model("cart", filterSchema);
+module.exports = mongoose.model("cart", cartSchema);
