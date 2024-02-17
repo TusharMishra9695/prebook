@@ -3,13 +3,13 @@ const {
   handleGetProducts,
   handlePostProducts,
 } = require("../../controllers/admin/product");
-const routerget = express.Router();
-const routerpost = express.Router();
+const getProducts = express.Router();
+const postProducts = express.Router();
 
-routerget.route("/").get(handleGetProducts);
-routerpost.route("/").post(handlePostProducts);
+getProducts.route("/").get(handleGetProducts);
+postProducts.route("/").post(handlePostProducts);
 
 module.exports = {
-  routerget,
-  routerpost,
+  getProducts,
+  postProducts,
 };

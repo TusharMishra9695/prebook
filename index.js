@@ -13,17 +13,16 @@ app.use(bodyParser.urlencoded({ extended: false }));
 // parse application/json
 app.use(bodyParser.json());
 
-const product_routes = require("./routes/admin/product");
 const signup_routes = require("./routes/user/signup");
 const login_routes = require("./routes/user/login");
 const filter_routes = require("./routes/admin/filters");
 const cart_routes = require("./routes/user/cart");
 const { restrictToLoggedInOnly } = require("./middlewares/LogInOnly");
 const { onlyForAdmin } = require("./middlewares/OnlyForAdmin");
-const { routerget, routerpost } = require("./routes/admin/product");
+const { getProducts, postProducts } = require("./routes/admin/product");
 
-app.use("/api/products", restrictToLoggedInOnly, routerget);
-app.use("/api/products", restrictToLoggedInOnly, onlyForAdmin, routerpost);
+app.use("/api/products", restrictToLoggedInOnly, getProducts);
+app.use("/api/products", restrictToLoggedInOnly, onlyForAdmin, postProducts);
 app.use("/api/signup", signup_routes);
 app.use("/api/login", login_routes);
 app.use("/api/filter", filter_routes);
