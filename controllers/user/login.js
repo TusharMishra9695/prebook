@@ -3,11 +3,11 @@ const Login = require("../../schemas/signupSchema");
 const { setUser } = require("../../services/auth");
 
 async function handlePostLogin(req, res) {
-  const { password, phoneNumber } = req.body;
+  const { password, phoneNumber, role } = req.body;
   try {
-    let findUser = await Login.findOne({ phoneNumber, password });
+    let findUser = await Login.findOne({ phoneNumber, password, role });
     if (findUser) {
-      const token = setUser(findUser);
+      const token = setUser(req.body); // token generate
       res.status(200).send({
         token: token,
         message: "Login Successfully",

@@ -18,8 +18,10 @@ const signup_routes = require("./routes/user/signup");
 const login_routes = require("./routes/user/login");
 const filter_routes = require("./routes/admin/filters");
 const cart_routes = require("./routes/user/cart");
+const { restrictToLoggedInOnly } = require("./middlewares/LogInOnly");
+const { onlyForAdmin } = require("./middlewares/OnlyForAdmin");
 
-app.use("/api/products", product_routes);
+app.use("/api/products", restrictToLoggedInOnly, onlyForAdmin, product_routes);
 app.use("/api/signup", signup_routes);
 app.use("/api/login", login_routes);
 app.use("/api/filter", filter_routes);

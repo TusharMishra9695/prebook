@@ -3,17 +3,17 @@ const Product = require("../../schemas/productSchema");
 async function handleGetProducts(req, res) {
   try {
     let result = await Product.find();
-    if (result) {
-      res.status(204).send({
-        result: result,
-        message: "Nothing in Product List",
-        success: false,
-      });
-    } else {
+    if (result.length > 0) {
       res.status(200).send({
         result: result,
         message: "Products Fetched Sucessfully",
         success: true,
+      });
+    } else {
+      res.status(204).send({
+        result: [],
+        message: "Nothing in Product List",
+        success: false,
       });
     }
   } catch (e) {
@@ -22,9 +22,14 @@ async function handleGetProducts(req, res) {
 }
 async function handlePostProducts(req, res) {
   try {
+    // if (req.body.role === "admin") {
+    console.log("admin ntered");
     let result = new Product(req.body);
-    await result.save;
+    await result.save();
     res.status(201).send({ message: "Product Listed", success: true });
+    // } else {
+    //   res.status(201).send({ message: "Your are not admin", success: false });
+    // }
   } catch (e) {
     errorMessage(res, "Products");
   }

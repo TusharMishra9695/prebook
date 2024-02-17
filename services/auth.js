@@ -5,6 +5,7 @@ function setUser(user) {
     {
       phoneNumber: user.phoneNumber,
       password: user.password,
+      role: user.role,
     },
     process.env.MONGODB_SECRET
   );
@@ -12,10 +13,9 @@ function setUser(user) {
 function verifyUser(token) {
   if (!token) return null;
   try {
-    return jwt.verify(token, process.env.MONGODB_SECRET);
+    return jwt.verify(token, process.env.MONGODB_SECRET); //expires
   } catch (e) {
-    console.log(e, "error");
-    return e;
+    return false;
   }
 }
 module.exports = {
