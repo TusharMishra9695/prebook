@@ -7,12 +7,20 @@ const productSchema = mongoose.Schema(
     mode: { type: String, enum: ["offline", "online"], default: "online" },
     classStart: { type: String, required: true },
     classEnd: { type: String },
-    liveLectures: { type: String, required: true },
-    topics: { type: String, required: true },
+    lectures: { type: Number, required: true },
+    topics: { type: Number, required: true },
+    interview_questions: { type: Number, required: true },
+    projects: { type: Number, required: true },
     seats: { type: Number, required: true },
+    duration: { type: Number, required: true }, //in months
     original_price: { type: Number, required: true },
-    discounted_price: { type: Number, required: true },
+    discounted_price: {
+      onetime: { type: Number, required: true },
+      half: { type: Number, required: true },
+      after_coupon: { type: Number, required: true },
+    },
     category: { type: String, required: true },
+
     imageUrl: [
       {
         url: { type: String, required: true },
@@ -23,24 +31,16 @@ const productSchema = mongoose.Schema(
         url: { type: String },
       },
     ],
-    description: {
-      includes: [
-        {
-          heading: { type: String, required: true },
-          points: [
-            {
-              detail: { type: String, required: true },
-            },
-          ],
-        },
-      ],
-      faq: [
-        {
-          question: { type: String, required: true },
-          answer: { type: String, required: true },
-        },
-      ],
-    },
+    includes: [
+      {
+        heading: { type: String, required: true },
+        points: [
+          {
+            detail: { type: String, required: true },
+          },
+        ],
+      },
+    ],
   },
   { timestamps: true }
 );
