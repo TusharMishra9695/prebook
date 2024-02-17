@@ -22,14 +22,9 @@ async function handleGetProducts(req, res) {
 }
 async function handlePostProducts(req, res) {
   try {
-    // if (req.body.role === "admin") {
-    console.log("admin ntered");
     let result = new Product(req.body);
     await result.save();
     res.status(201).send({ message: "Product Listed", success: true });
-    // } else {
-    //   res.status(201).send({ message: "Your are not admin", success: false });
-    // }
   } catch (e) {
     errorMessage(res, "Products");
   }
