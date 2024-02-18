@@ -25,7 +25,7 @@ async function handlePostFaq(req, res) {
     await result.save();
     res.status(201).send({ message: "FAQ's Listed", success: true });
   } catch (e) {
-    errorMessage(res, "FAQ's3");
+    errorMessage(res, "FAQ's");
   }
 }
 
