@@ -21,10 +21,13 @@ const product_detail_route = require("./routes/user/productDetail");
 const { restrictToLoggedInOnly } = require("./middlewares/LogInOnly");
 const { onlyForAdmin } = require("./middlewares/OnlyForAdmin");
 const { getProducts, postProducts } = require("./routes/admin/product");
+const { getFaq, postFaq } = require("./routes/user/faq");
 
 app.use("/api/products", restrictToLoggedInOnly, getProducts);
 app.use("/api/products", restrictToLoggedInOnly, onlyForAdmin, postProducts);
 app.use("/api/product-detail", restrictToLoggedInOnly, product_detail_route);
+app.use("/api/faq", restrictToLoggedInOnly, getFaq);
+app.use("/api/faq", restrictToLoggedInOnly, onlyForAdmin, postFaq);
 app.use("/api/signup", signup_routes);
 app.use("/api/login", login_routes);
 app.use("/api/filter", filter_routes);

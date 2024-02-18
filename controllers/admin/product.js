@@ -10,8 +10,7 @@ async function handleGetProducts(req, res) {
         success: true,
       });
     } else {
-      res.status(204).send({
-        result: [],
+      res.status(200).send({
         message: "Nothing in Product List",
         success: false,
       });
