@@ -14,10 +14,11 @@ const productSchema = mongoose.Schema(
     seats: { type: Number, required: true },
     duration: { type: Number, required: true }, //in months
     original_price: { type: Number, required: true },
+    coupon: { type: Number, required: true },
     discounted_price: {
+      monthly: { type: Number, required: true },
       onetime: { type: Number, required: true },
       half: { type: Number, required: true },
-      after_coupon: { type: Number, required: true },
     },
     category: { type: String, required: true },
 
