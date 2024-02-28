@@ -1,67 +1,36 @@
-const { errorMessage } = require("../../utils/handleFunction");
+const { errorMessage, generateOTP } = require("../../utils/handleFunction");
 const Signup = require("../../schemas/signupSchema");
-const nodemailer = require("nodemailer");
+const client = require("twilio")(
+  process.env.SID_SECRET,
+  process.env.AUTH_SECRET
+);
 
-function generateOTP() {
-  return Math.floor(100000 + Math.random() * 900000);
-}
-const otpStore = {};
 async function handlePostUser(req, res) {
-  const { phoneNumber, email, password } = req.body;
+  const { phoneNumber, email } = req.body;
   try {
-    const otp = generateOTP();
-    console.log(otp, "otp aya");
-    // res.send({ otp: otp, mesaage: "otp generated" });
-    // Store OTP against the email (In real scenario, OTP should be stored in database)
-    otpStore[email] = otp;
-
-    let testAccount = await nodemailer.createTestAccount();
-
-    // create reusable transporter object using the default SMTP transport
-    let transporter = nodemailer.createTransport({
-      host: "smtp.ethereal.email",
-      port: 587,
-      secure: false, // true for 465, false for other ports
-      auth: {
-        user: testAccount.user, // generated ethereal user
-        pass: testAccount.pass, // generated ethereal password
-      },
-    });
-
-    let message = {
-      from: '"Fred Foo 👻" <foo@example.com>', // sender address
-      to: "bar@example.com, baz@example.com", // list of receivers
-      subject: "Hello ✔", // Subject line
-      text: `Successfully Register with us. ${otp}`, // plain text body
-      html: "<b>Successfully Register with us.</b>", // html body
+    const otpGenerated = generateOTP();
+    const message = {
+      body: `Here is your OTP for signup ${otpGenerated}`,
+      from: process.env.FROM_SECRET,
+      to: `+91${phoneNumber}`,
     };
-
-    transporter
-      .sendMail(message)
-      .then((info) => {
-        return res.status(201).json({
-          msg: "you should receive an email",
-          info: info.messageId,
-          preview: nodemailer.getTestMessageUrl(info),
-        });
-      })
-      .catch((error) => {
-        return res.status(500).json({ error });
+    let findUser = await Signup.findOne({ phoneNumber, email });
+    if (findUser) {
+      res.status(200).send({
+        // 409 previously removed because not working in native
+        message: "Phone no. / Email is already registered.",
+        success: false,
       });
-    // let findUser = await Signup.findOne({ phoneNumber });
-    // if (findUser) {
-    //   res.status(200).send({
-    //     // 409 previously rmeoved because not working in native
-    //     message: "Phoneno. is already registered.",
-    //     success: false,
-    //   });
-    // } else {
-    //   let result = new Signup(req.body);
-    //   await result.save();
-    //   res
-    //     .status(201)
-    //     .send({ message: "User Registered successfully ", success: true });
-    // }
+    } else {
+      // await client.messages.create(message);  // otp sending
+      let result = new Signup(req.body);
+      result.otp = otpGenerated;
+      // await result.save();  // saving user to db
+      res.status(201).send({
+        message: `OTP sended to ${phoneNumber}`,
+        success: true,
+      });
+    }
   } catch (e) {
     errorMessage(res, "signup");
   }

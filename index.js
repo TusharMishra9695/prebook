@@ -16,6 +16,7 @@ app.use(bodyParser.json());
 const signup_routes = require("./routes/user/signup");
 const login_routes = require("./routes/user/login");
 const contact_route = require("./routes/user/contact");
+const verify_route = require("./routes/user/verify");
 
 const product_detail_route = require("./routes/user/productDetail");
 const { restrictToLoggedInOnly } = require("./middlewares/LogInOnly");
@@ -34,6 +35,7 @@ app.use("/api/about", restrictToLoggedInOnly, getAbout);
 app.use("/api/about", restrictToLoggedInOnly, onlyForAdmin, postAbout);
 app.use("/api/signup", signup_routes);
 app.use("/api/login", login_routes);
+app.use("/api/verify-user", verify_route);
 app.use("/api/contact", restrictToLoggedInOnly, onlyForUser, contact_route);
 
 app.listen(port, () => {
