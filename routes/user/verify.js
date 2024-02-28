@@ -2,6 +2,6 @@ const express = require("express");
 const { handleVerify } = require("../../controllers/user/verify");
 router = express.Router();
 
-router.route("/").get(handleVerify);
+router.route("/").post(handleVerify);
 
 module.exports = router;

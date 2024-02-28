@@ -11,11 +11,18 @@ async function handleVerify(req, res) {
     }
 
     if (user.otp !== otp) {
-      return res.status(400).json({ message: "Invalid OTP.", success: false });
+      return res
+        .status(400)
+        .json({ message: "Invalid OTP. ! Resend OTP", success: false });
+    }
+    if (user.expiresAt < new Date()) {
+      return res
+        .status(400)
+        .json({ message: "OTP has expired. ! Resend OTP", success: false });
     }
 
     // Marking user account as verified
-    user.verified = true;
+    user.isVerified = true;
     await user.save();
     res.status(200).json({
       message: "User signed up successfully. Account verified.",

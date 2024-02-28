@@ -35,7 +35,7 @@ app.use("/api/about", restrictToLoggedInOnly, getAbout);
 app.use("/api/about", restrictToLoggedInOnly, onlyForAdmin, postAbout);
 app.use("/api/signup", signup_routes);
 app.use("/api/login", login_routes);
-app.use("/api/verify-user", verify_route);
+app.use("/api/verify", verify_route);
 app.use("/api/contact", restrictToLoggedInOnly, onlyForUser, contact_route);
 
 app.listen(port, () => {

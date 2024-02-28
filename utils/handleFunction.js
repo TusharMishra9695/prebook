@@ -7,4 +7,5 @@ const errorMessage = (res, name) => {
 function generateOTP() {
   return Math.floor(100000 + Math.random() * 900000);
 }
-module.exports = { errorMessage, generateOTP };
+const expiresAt = new Date(Date.now() + 5 * 60 * 1000);
+module.exports = { errorMessage, generateOTP, expiresAt };
