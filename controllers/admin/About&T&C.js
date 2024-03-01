@@ -12,7 +12,7 @@ async function handleGetAbout(req, res) {
       });
     } else {
       res.status(200).send({
-        message: "Nothing in About, T&C List",
+        message: "Nothing Available !",
         success: false,
       });
     }
@@ -24,7 +24,7 @@ async function handlePostAbout(req, res) {
   try {
     let result = new About(req.body);
     await result.save();
-    res.status(201).send({ message: "About, T&C Listed", success: true });
+    res.status(201).send({ message: "About or T&C Listed", success: true });
   } catch (e) {
     errorMessage(res, "About");
   }

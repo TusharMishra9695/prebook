@@ -10,7 +10,7 @@ const client = require("twilio")(
 );
 
 async function handlePostUser(req, res) {
-  const { phoneNumber, email } = req.body;
+  const { phoneNumber } = req.body;
   try {
     const otpGenerated = generateOTP();
     const expiredOTP = expiresAt;
@@ -20,7 +20,6 @@ async function handlePostUser(req, res) {
       to: `+91${phoneNumber}`,
     };
     let findUser = await Signup.findOne({ phoneNumber });
-    let findEmail = await Signup.findOne({ email });
 
     if (findUser && findUser.isVerified) {
       res.status(200).send({
@@ -28,28 +27,30 @@ async function handlePostUser(req, res) {
         message: "Phone no. is already registered.",
         success: false,
       });
-    } else if (findEmail && findEmail.isVerified) {
-      res.status(200).send({
-        // 409 previously removed because not working in native
-        message: "Email is already registered.",
-        success: false,
-      });
     } else if (findUser && !findUser.isVerified) {
-      // await client.messages.create(message);  // otp resending
+      // await client.messages.create(message); // otp resending
       findUser.otp = otpGenerated;
       findUser.expiresAt = expiredOTP;
       await findUser.save();
       res.send({
+        result: {
+          phoneNumber,
+          otp: otpGenerated,
+        },
         message: `OTP sended to ${phoneNumber} ! Verify First`,
         success: true,
       });
     } else {
-      // await client.messages.create(message);  // otp sending
+      // await client.messages.create(message); // otp sending
       let result = new Signup(req.body);
       result.otp = otpGenerated;
       result.expiresAt = expiredOTP;
       await result.save(); // saving user to db
       res.status(200).send({
+        result: {
+          phoneNumber,
+          otpGenerated,
+        },
         message: `OTP sended to ${phoneNumber}`,
         success: true,
       });
@@ -59,5 +60,21 @@ async function handlePostUser(req, res) {
     errorMessage(res, "signup");
   }
 }
-
-module.exports = { handlePostUser };
+async function handleUpdatePass(req, res) {
+  const { newPassword, phoneNumber } = req.body;
+  try {
+    let User = await Signup.findOne({ phoneNumber });
+    if (User) {
+      User.password = newPassword;
+      await User.save();
+      res
+        .status(200)
+        .send({ message: "Password Updated Successfully", success: true });
+    } else {
+      res.send({ message: "User Not Found !", success: false });
+    }
+  } catch (e) {
+    errorMessage(res, "update password");
+  }
+}
+module.exports = { handlePostUser, handleUpdatePass };

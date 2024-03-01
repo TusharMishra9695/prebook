@@ -6,7 +6,7 @@ async function handlePostContact(req, res) {
     let result = new Contact(req.body);
     await result.save();
     res.status(201).send({
-      message: "Thank you for reaching us ! We will reach you with in 24 hours",
+      message: "Thank you for reaching us !",
       success: true,
     });
   } catch (e) {
