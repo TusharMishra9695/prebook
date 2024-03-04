@@ -12,7 +12,7 @@ const signupSchema = mongoose.Schema(
     isVerified: { type: Boolean, default: false },
     role: { type: String, enum: ["admin", "user"], default: "user" },
     location: { type: String },
-    gender: { type: String },
+    gender: { type: String, default: "NA" },
   },
   { timestamps: true }
 );
