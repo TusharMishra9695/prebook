@@ -5,6 +5,9 @@ const {
 } = require("../../utils/handleFunction");
 const Signup = require("../../schemas/signupSchema");
 const FreeClass = require("../../schemas/FreeClassSchema");
+const bcrypt = require("bcryptjs");
+const salt = bcrypt.genSaltSync(10);
+const pepper = process.env.PEP_SECRET;
 
 const client = require("twilio")(
   process.env.SID_SECRET,
@@ -44,9 +47,11 @@ async function handlePostUser(req, res) {
       });
     } else {
       // await client.messages.create(message); // otp sending
+      const hashedPassword = bcrypt.hashSync(req.body.password + pepper, salt);
       let result = new Signup(req.body);
       result.otp = otpGenerated;
       result.expiresAt = expiredOTP;
+      result.password = hashedPassword;
       await result.save(); // saving user to db
       res.status(200).send({
         result: {

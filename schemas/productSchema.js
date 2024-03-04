@@ -6,6 +6,7 @@ const productSchema = mongoose.Schema(
     language: { type: String, required: true },
     mode: { type: String, enum: ["offline", "online"], default: "online" },
     classStart: { type: String, required: true },
+    brochure_link: { type: String },
     classEnd: { type: String },
     lectures: { type: Number, required: true },
     topics: { type: Number, required: true },
@@ -17,6 +18,7 @@ const productSchema = mongoose.Schema(
     coupon: { type: Number, required: true },
     discounted_price: {
       monthly: { type: Number, required: true },
+      discounted_monthly: { type: Number, required: true },
       onetime: { type: Number, required: true },
       half: { type: Number, required: true },
     },
