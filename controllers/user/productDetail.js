@@ -3,8 +3,8 @@ const ProductDetail = require("../../schemas/productSchema");
 
 async function handleGetProductDetail(req, res) {
   try {
-    let productDetail = await ProductDetail.find({ _id: req.query._id });
-    if (productDetail.length > 0) {
+    let productDetail = await ProductDetail.findOne({ _id: req.query._id });
+    if (productDetail) {
       res.status(200).send({
         result: productDetail,
         message: "Product Detail Fetched",
@@ -12,8 +12,7 @@ async function handleGetProductDetail(req, res) {
       });
     } else {
       res.status(200).send({
-        result: [],
-        message: "Nothing in Product Detail List",
+        message: "Nothing in Product Detail",
         success: false,
       });
     }

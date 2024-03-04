@@ -1,7 +1,6 @@
 const About = require("../../schemas/aboutSchema");
 const { errorMessage } = require("../../utils/handleFunction");
 async function handleGetAbout(req, res) {
-  console.log(req.query, "query");
   try {
     let result = await About.find(req.query);
     if (result.length > 0) {
