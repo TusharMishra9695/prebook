@@ -11,6 +11,7 @@ const signupSchema = mongoose.Schema(
     registrationDate: { type: Date, default: Date.now() },
     isVerified: { type: Boolean, default: false },
     role: { type: String, enum: ["admin", "user"], default: "user" },
+    location: { type: String },
   },
   { timestamps: true }
 );
