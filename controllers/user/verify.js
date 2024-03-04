@@ -1,4 +1,5 @@
 const User = require("../../schemas/signupSchema");
+const { errorMessage } = require("../../utils/handleFunction");
 async function handleVerify(req, res) {
   try {
     const { phoneNumber, otp } = req.body;
@@ -8,31 +9,27 @@ async function handleVerify(req, res) {
       return res
         .status(404)
         .json({ message: "User not found.", success: false });
-    }
-
-    if (user.otp !== otp) {
+    } else if (user.otp !== otp) {
       return res
         .status(400)
-        .json({ message: "Invalid OTP. ! Resend OTP", success: false });
-    }
-    if (user.expiresAt < new Date()) {
+        .json({ message: "Invalid OTP! Resend OTP", success: false });
+    } else if (user.expiresAt < new Date()) {
       return res
         .status(400)
-        .json({ message: "OTP has expired. ! Resend OTP", success: false });
+        .json({ message: "OTP has expired! Resend OTP", success: false });
+    } else {
+      // Marking user account as verified
+      user.isVerified = true;
+      user.otp = "";
+      user.expiresAt = "";
+      await user.save();
+      res.status(200).json({
+        message: "Account verified!",
+        success: true,
+      });
     }
-
-    // Marking user account as verified
-    user.isVerified = true;
-    await user.save();
-    res.status(200).json({
-      message: "User signed up successfully. Account verified.",
-      success: true,
-    });
   } catch (err) {
-    console.error(err);
-    res
-      .status(500)
-      .json({ message: "An error occurred during OTP verification." });
+    errorMessage(res, "Verify");
   }
 }
 module.exports = { handleVerify };

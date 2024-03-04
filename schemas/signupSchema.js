@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 
 const signupSchema = mongoose.Schema(
   {
-    name: { type: String },
+    name: { type: String, default: "" },
     email: { type: String, unique: true },
     phoneNumber: { type: Number, required: true },
     password: { type: String, required: true },
@@ -11,7 +11,8 @@ const signupSchema = mongoose.Schema(
     registrationDate: { type: Date, default: Date.now() },
     isVerified: { type: Boolean, default: false },
     role: { type: String, enum: ["admin", "user"], default: "user" },
-    location: { type: String },
+    state: { type: String, default: "Uttar Pradesh" },
+    city: { type: String, default: "Kanpur" },
     gender: { type: String, default: "NA" },
   },
   { timestamps: true }

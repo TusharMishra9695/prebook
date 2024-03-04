@@ -18,6 +18,7 @@ const login_routes = require("./routes/user/login");
 const contact_route = require("./routes/user/contact");
 const verify_route = require("./routes/user/verify");
 const free_class_route = require("./routes/user/freeClass");
+const user_detail_route = require("./routes/user/userDetails");
 
 const product_detail_route = require("./routes/user/productDetail");
 const { restrictToLoggedInOnly } = require("./middlewares/LogInOnly");
@@ -45,6 +46,13 @@ app.use("/api/about", restrictToLoggedInOnly, onlyForAdmin, postAbout);
 app.use("/api/signup", signup_routes);
 app.use("/api/login", login_routes);
 app.use("/api/verify", verify_route);
+app.use(
+  "/api/user-detail",
+  restrictToLoggedInOnly,
+  onlyForUser,
+  user_detail_route
+);
+
 app.use(
   "/api/free-class",
   restrictToLoggedInOnly,
