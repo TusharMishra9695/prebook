@@ -102,11 +102,11 @@ async function handleUpdateUserDetail(req, res) {
 }
 async function handleGetUserDetail(req, res) {
   try {
-    let User = await Signup.findOne({ phoneNumber: req.query.phoneNumber });
+    let User = await Signup.findOne({ phoneNumber: req.user.phoneNumber });
     let BookFreeClass = await FreeClass.find({
-      phoneNumber: req.query.phoneNumber,
+      phoneNumber: req.user.phoneNumber,
     });
-    if (User && BookFreeClass) {
+    if (User) {
       let result = {
         name: User.name,
         email: User.email,
