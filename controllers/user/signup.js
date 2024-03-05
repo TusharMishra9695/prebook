@@ -83,14 +83,12 @@ async function handleUpdatePass(req, res) {
   }
 }
 async function handleUpdateUserDetail(req, res) {
-  const { name, email, state, city, phoneNumber } = req.body;
+  const { name, email } = req.body;
   try {
-    let User = await Signup.findOne({ phoneNumber });
+    let User = await Signup.findOne({ phoneNumber: req.user.phoneNumber });
     if (User) {
       User.name = name;
       User.email = email;
-      User.state = state;
-      User.city = city;
       await User.save();
       res.status(200).send({ message: "Profile Updated!", success: true });
     } else {

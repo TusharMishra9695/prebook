@@ -2,8 +2,8 @@ const mongoose = require("mongoose");
 
 const signupSchema = mongoose.Schema(
   {
-    name: { type: String, default: "" },
-    email: { type: String, unique: true },
+    name: { type: String, default: "NA" },
+    email: { type: String },
     phoneNumber: { type: Number, required: true },
     password: { type: String, required: true },
     otp: { type: String },

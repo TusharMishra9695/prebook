@@ -4,6 +4,7 @@ const freeClassSchema = mongoose.Schema(
   {
     name: { type: String, required: true },
     email: { type: String, required: true },
+    course_name: { type: String },
     phoneNumber: { type: Number, required: true },
     college: { type: String, required: true },
     date: { type: String, required: true },

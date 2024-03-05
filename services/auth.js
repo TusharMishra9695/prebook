@@ -4,7 +4,6 @@ function setUser(user) {
   return jwt.sign(
     {
       phoneNumber: user.phoneNumber,
-      password: user.password,
       role: user.role,
     },
     process.env.MONGODB_SECRET
